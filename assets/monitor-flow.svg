@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title description">
+  <title id="title">Как работает Fuel Station Research</title>
+  <desc id="description">Схема: публичные источники статусов, монитор, карта с вероятными окнами подвоза и уведомление Pushover.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#07172d"/><stop offset="1" stop-color="#123965"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-opacity=".22"/></filter>
+  </defs>
+  <rect width="1200" height="520" rx="28" fill="url(#bg)"/>
+  <text x="62" y="78" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Fuel Station Research</text>
+  <text x="62" y="112" fill="#b8d4f7" font-family="Arial, sans-serif" font-size="18">От статусов источников — к решению, когда ехать заправляться</text>
+  <g filter="url(#shadow)" font-family="Arial, sans-serif">
+    <rect x="62" y="176" width="244" height="220" rx="20" fill="#fff"/>
+    <circle cx="108" cy="224" r="25" fill="#e7f0ff"/><path d="M98 224h20M108 214v20" stroke="#2869c7" stroke-width="4" stroke-linecap="round"/>
+    <text x="94" y="280" fill="#15233a" font-size="21" font-weight="700">Публичные статусы</text>
+    <text x="94" y="314" fill="#53657e" font-size="16">TutBenz · ГдеБЕНЗ</text>
+    <text x="94" y="340" fill="#53657e" font-size="16">Яндекс.Карты</text>
+    <text x="94" y="370" fill="#53657e" font-size="16">Только выбранные АЗС</text>
+    <rect x="360" y="176" width="244" height="220" rx="20" fill="#fff"/>
+    <circle cx="406" cy="224" r="25" fill="#e8fbf0"/><path d="M394 229l8 8 17-22" fill="none" stroke="#25804e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="392" y="280" fill="#15233a" font-size="21" font-weight="700">Монитор</text>
+    <text x="392" y="314" fill="#53657e" font-size="16">Сохраняет изменения</text>
+    <text x="392" y="340" fill="#53657e" font-size="16">статусов во времени</text>
+    <text x="392" y="370" fill="#53657e" font-size="16">и ищет повторяемость</text>
+    <rect x="658" y="176" width="244" height="220" rx="20" fill="#fff"/>
+    <circle cx="704" cy="224" r="25" fill="#fff2db"/><path d="M692 233c18-25 23-25 30 0" fill="none" stroke="#e18b25" stroke-width="4" stroke-linecap="round"/><circle cx="706" cy="217" r="4" fill="#e18b25"/>
+    <text x="690" y="280" fill="#15233a" font-size="21" font-weight="700">Карта и история</text>
+    <text x="690" y="314" fill="#53657e" font-size="16">Текущие статусы</text>
+    <text x="690" y="340" fill="#53657e" font-size="16">и вероятные окна</text>
+    <text x="690" y="370" fill="#53657e" font-size="16">появления АИ‑95</text>
+    <rect x="956" y="176" width="182" height="220" rx="20" fill="#4e86d7"/>
+    <circle cx="1002" cy="224" r="25" fill="#ffffff33"/><path d="M990 231c0-10 4-16 12-16s12 6 12 16l5 6h-34z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><circle cx="1002" cy="243" r="3" fill="#fff"/>
+    <text x="988" y="280" fill="#fff" font-size="21" font-weight="700">Pushover</text>
+    <text x="988" y="314" fill="#eaf3ff" font-size="16">Сигнал, когда</text>
+    <text x="988" y="340" fill="#eaf3ff" font-size="16">топливо</text>
+    <text x="988" y="366" fill="#eaf3ff" font-size="16">появилось</text>
+  </g>
+  <g fill="none" stroke="#8dbaf0" stroke-width="4" stroke-linecap="round"><path d="M314 286h34"/><path d="M612 286h34"/><path d="M910 286h34"/></g>
+  <g fill="#8dbaf0"><path d="M348 278l14 8-14 8z"/><path d="M646 278l14 8-14 8z"/><path d="M944 278l14 8-14 8z"/></g>
+  <text x="62" y="462" fill="#b8d4f7" font-family="Arial, sans-serif" font-size="16">Статусы — это сигналы, а не гарантия фактического подвоза: перед выездом их стоит проверить.</text>
+</svg>
