@@ -31,7 +31,7 @@
   <div id="map" aria-label="Интерактивная карта АЗС и текущих наблюдений АИ‑95"></div>
   <div class="map-actions">
     <a class="history-link" href="notification-history.html">Хронология статусов и уведомлений АИ‑95 →</a>
-    <div class="map-note">Срез источников: 21.09.2026 22:32 МСК. Нестабильность — частота смены статусов за 7 дней: 0 — стабильно, 100 — чаще всего среди этих АЗС.</div>
+    <div class="map-note">Срез источников: 21.09.2026 22:32 МСК. На карте показаны подтверждения наличия АИ‑95 и статистически вероятные окна подвоза.</div>
   </div>
   <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
   <script>
@@ -71,9 +71,9 @@
         const snackbar = document.createElement('div');
         snackbar.className = 'station-snackbar';
         snackbar.setAttribute('aria-hidden', 'true');
-        snackbar.innerHTML = `<strong>${station.name}</strong><span>Вероятный подвоз: ${station.windows}</span><span>${availabilityText(station)}</span><span>Нестабильность: ${station.problem}/100</span>`;
+        snackbar.innerHTML = `<strong>${station.name}</strong><span>Вероятный подвоз: ${station.windows}</span><span>${availabilityText(station)}</span>`;
         const yandex = `https://yandex.ru/maps/?ll=${station.lon}%2C${station.lat}&z=17&pt=${station.lon}%2C${station.lat}%2Cpm2rdm`;
-        const popup = new maplibregl.Popup({ offset: 22 }).setHTML(`<div class="popup-title">${station.name}</div><div>${station.address}</div><div class="popup-time">Статистически вероятный подвоз: ${station.windows}</div><div class="popup-note">${availabilityText(station)}<br>${station.sources}<br>Нестабильность: ${station.problem}/100 — ${station.eventsPerDay} смены статуса в день за последние 7 дней. Чем выше значение, тем чаще статусы менялись относительно остальных АЗС на карте.<br>${station.appearances} наблюдений доступности за весь журнал.<br>Временные метки рассчитаны по повторяемости появлений статуса в журнале.</div><a class="popup-link" href="${yandex}" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>`);
+        const popup = new maplibregl.Popup({ offset: 22 }).setHTML(`<div class="popup-title">${station.name}</div><div>${station.address}</div><div class="popup-time">Статистически вероятный подвоз: ${station.windows}</div><div class="popup-note">${availabilityText(station)}<br>${station.sources}<br>${station.appearances} наблюдений доступности за весь журнал.<br>Временные метки рассчитаны по повторяемости появлений статуса в журнале.</div><a class="popup-link" href="${yandex}" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>`);
         new maplibregl.Marker({ element: pin, anchor: 'bottom' }).setLngLat([station.lon, station.lat]).setPopup(popup).addTo(map);
         new maplibregl.Marker({ element: snackbar, anchor: 'bottom-left', offset: [18, -18] }).setLngLat([station.lon, station.lat]).addTo(map);
         bounds.extend([station.lon, station.lat]);
