@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuel Station Research — хронология статусов</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 14px/1.45 system-ui, sans-serif; margin: 0 auto; max-width: 1120px; padding: 24px; }
+    h1 { margin: 0 0 6px; } p { color: #666; } a { color: #1769e0; }
+    label { display: inline-block; margin: 8px 12px 14px 0; } select { font: inherit; margin-left: 6px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; } th, td { border-bottom: 1px solid #d5d5d5; padding: 8px; text-align: left; vertical-align: top; } th { position: sticky; top: 0; background: Canvas; } .yes { color: #16803b; font-weight: 700; } .no { color: #a12f2f; } .meta { font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Хронология статусов и уведомлений АИ‑95</h1>
+  <p>Показаны все изменения статуса из журнала. Строка «появился» — кандидат на уведомление; одиночное <code>unknown → available</code> может быть ресинхронизацией источника, а не фактическим подвозом.</p>
+  <p><a href="ai95-map.html">← Вернуться к карте</a></p>
+  <label>АЗС <select id="station"><option value="">Все</option></select></label>
+  <label>Источник <select id="source"><option value="">Все</option></select></label>
+  <label><input id="only-arrivals" type="checkbox"> Только появления</label>
+  <p id="summary" class="meta">Загрузка журнала…</p>
+  <table><thead><tr><th>Время, МСК</th><th>АЗС</th><th>Источник</th><th>Изменение</th><th>Уведомление</th></tr></thead><tbody id="rows"></tbody></table>
+  <script>
+    const OK = new Set(['IN_STOCK', 'available', 'has', 'yes', 'queue', 'limit']);
+    const station = document.querySelector('#station'), source = document.querySelector('#source'), onlyArrivals = document.querySelector('#only-arrivals'), rows = document.querySelector('#rows'), summary = document.querySelector('#summary');
+    let events = [];
+    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+    const local = (iso) => new Intl.DateTimeFormat('ru-RU', { dateStyle: 'short', timeStyle: 'medium', timeZone: 'Europe/Moscow' }).format(new Date(iso));
+    function render() {
+      const filtered = events.filter(e => (!station.value || e.station === station.value) && (!source.value || e.source === source.value) && (!onlyArrivals.checked || e.arrival));
+      summary.textContent = `Показано ${filtered.length} из ${events.length} изменений.`;
+      rows.innerHTML = filtered.slice().reverse().map(e => `<tr><td>${local(e.at)}</td><td>${esc(e.station)}<br><span class="meta">${esc(e.address || '')}</span></td><td>${esc(e.source)}</td><td class="${e.arrival ? 'yes' : 'no'}">${esc(e.old_status)} → ${esc(e.new_status)}</td><td>${e.arrival ? 'появился' : '—'}</td></tr>`).join('');
+    }
+    fetch('../data/events.jsonl').then(r => r.text()).then(text => {
+      events = text.trim().split('\n').map(JSON.parse).filter(e => e.fuel === 'ai95').map(e => ({ ...e, arrival: !OK.has(e.old_status) && OK.has(e.new_status) }));
+      [...new Set(events.map(e => e.station))].sort().forEach(v => station.insertAdjacentHTML('beforeend', `<option>${esc(v)}</option>`));
+      [...new Set(events.map(e => e.source))].sort().forEach(v => source.insertAdjacentHTML('beforeend', `<option>${esc(v)}</option>`));
+      render();
+    }).catch(() => { summary.textContent = 'Не удалось загрузить журнал. Откройте страницу через локальный HTTP-сервер или GitHub Pages.'; });
+    [station, source, onlyArrivals].forEach(x => x.addEventListener('change', render));
+  </script>
+</body>
+</html>

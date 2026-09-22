@@ -1,5 +1,5 @@
-data/
-station_mapping.json
+data/*
+!data/events.jsonl
 .env
 .env.*
 .config/
@@ -9,4 +9,3 @@ station_mapping.json
 __pycache__/
 *.py[cod]
 .DS_Store
-

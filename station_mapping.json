@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-25",
+  "notes": [
+    "IDs are source-local. null means the source did not expose a verified station-level ID through its public unauthenticated interface.",
+    "TutBenz and ГдеБЕНЗ sometimes normalize or omit a house number; matches marked address_match are coordinate/brand matches.",
+    "T-Bank Fuel is an authenticated mobile-app flow. No ID was guessed or extracted from an unauthorized session."
+  ],
+  "stations": [
+    {"priority":1,"station_name":"Teboil — Крутицкая наб., 17А","address":"Москва, Крутицкая наб., 17А","coordinates":{"lat":55.721209,"lon":37.6586964},"address_match":"exact building in Yandex/ГдеБЕНЗ; TutBenz omits 17А","yandex_id":"7257327197","tbank_id":null,"gdebenz_id":"usr_mK9Px8XXEw4","tutbenz_id":"2357d135-348c-4eea-9bd7-2934ec858f5c"},
+    {"priority":2,"station_name":"Teboil — 3-й Крутицкий пер., вл.17, соор.1","address":"Москва, 3-й Крутицкий пер., вл.17, соор.1","coordinates":{"lat":55.730021,"lon":37.6587883},"address_match":"street/house; source omits corpus","yandex_id":"68110330847","tbank_id":null,"gdebenz_id":"444765733","tutbenz_id":"02df3351-6c7e-43cf-9eee-989a97dbf289"},
+    {"priority":3,"station_name":"Роснефть — Волгоградский просп., 24, стр.1","address":"Москва, Волгоградский просп., 24, стр.1","coordinates":{"lat":55.7273535,"lon":37.6792188},"address_match":"exact","yandex_id":"65475135676","tbank_id":null,"gdebenz_id":"usr_nYHLyNC4RIs","tutbenz_id":"19564703-8050-46a5-afc3-bbbcac535021"},
+    {"priority":4,"station_name":"Нефтьмагистраль — ул. Симоновский Вал, 28","address":"Москва, ул. Симоновский Вал, 28","coordinates":{"lat":55.717684,"lon":37.663004},"address_match":"exact in ГдеБЕНЗ/Yandex; TutBenz labels the same coordinates Восточная улица","yandex_id":"1045808285","tbank_id":null,"gdebenz_id":"usr_qX0U36KUFpE","tutbenz_id":"3fdd82b0-924b-4d11-8bf8-cb15a3f1ba9a"},
+    {"priority":5,"station_name":"Татнефть — 2-я ул. Машиностроения, 8А, стр.1","address":"Москва, 2-я ул. Машиностроения, 8А, стр.1","coordinates":{"lat":55.7160836,"lon":37.6842488},"address_match":"exact building in Yandex/ГдеБЕНЗ; TutBenz omits building","yandex_id":"1049697295","tbank_id":null,"gdebenz_id":"2655790623","tutbenz_id":"cf94bf03-3c33-4538-bf3e-9ce70ebad459"},
+    {"priority":6,"station_name":"Роснефть — 2-я ул. Машиностроения, вл.14, стр.1","address":"Москва, 2-я ул. Машиностроения, вл.14, стр.1","coordinates":{"lat":55.7192468,"lon":37.696171},"address_match":"exact building in Yandex/ГдеБЕНЗ; TutBenz omits building","yandex_id":"1709639148","tbank_id":null,"gdebenz_id":"345818751","tutbenz_id":"c63c44e6-a7b0-4e03-aaf5-bf448ddf0c41"},
+    {"priority":7,"station_name":"Лукойл — 7-я Кожуховская ул., 7","address":"Москва, 7-я Кожуховская ул., 7","coordinates":{"lat":55.70954,"lon":37.67073},"address_match":"exact in Yandex/ГдеБЕНЗ; no coordinate-near TutBenz station found","yandex_id":"1062579917","tbank_id":null,"gdebenz_id":"usr_ZmMF7VEEmWI","tutbenz_id":null},
+    {"priority":8,"station_name":"Лукойл — Южнопортовая ул., вл.6, соор.А","address":"Москва, Южнопортовая ул., вл.6, соор.А","coordinates":{"lat":55.710266,"lon":37.682156},"address_match":"exact in Yandex; ГдеБЕНЗ uses Южнопортовая, 8 and TutBenz omits building, both are coordinate-near","yandex_id":"1015833554","tbank_id":null,"gdebenz_id":"usr_aSSGEHWspws","tutbenz_id":"826b448e-4a0b-42ab-a767-303539db5e6c"}
+  ]
+}
