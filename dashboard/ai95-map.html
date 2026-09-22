@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuel Station Research — anonymized map example</title>
+  <link href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" rel="stylesheet">
+  <style>
+    html, body, #map { height: 100%; margin: 0; }
+    #map { min-height: 600px; }
+    .pin { background: #1769e0; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 2px 8px #0005; height: 18px; width: 18px; }
+    .note { background: #fffffff0; border-radius: 10px; bottom: 12px; box-shadow: 0 3px 12px #0003; color: #343434; font: 12px/1.35 system-ui, sans-serif; max-width: 340px; padding: 9px 11px; position: absolute; right: 12px; z-index: 2; }
+  </style>
+</head>
+<body>
+  <div id="map" aria-label="Обезличенный пример карты статусов АИ-95"></div>
+  <div class="note">Демо-данные: названия, координаты, статусы и модельные окна обезличены. Перед выездом проверяйте наличие топлива.</div>
+  <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+  <script>
+    const stations = [
+      { name: 'АЗС A', lat: 55.7558, lon: 37.6173, status: 'есть · 2 источника', window: '07:00 · 12:00 · 18:00', index: 42 },
+      { name: 'АЗС B', lat: 55.7658, lon: 37.6473, status: 'нет подтверждения', window: '06:00 · 11:00 · 16:00', index: 68 },
+      { name: 'АЗС C', lat: 55.7458, lon: 37.6373, status: 'есть · 1 источник', window: '08:00 · 14:00 · 20:00', index: 25 }
+    ];
+    const map = new maplibregl.Map({ container: 'map', style: 'https://tiles.openfreemap.org/styles/liberty', center: [37.632, 55.756], zoom: 12.2 });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
+    map.on('load', () => stations.forEach((station) => {
+      const el = document.createElement('div');
+      el.className = 'pin';
+      const popup = new maplibregl.Popup({ offset: 14 }).setHTML(`<strong>${station.name}</strong><br>Текущий статус: ${station.status}<br>Вероятные окна: ${station.window}<br>Индекс нестабильности: ${station.index}/100`);
+      new maplibregl.Marker({ element: el }).setLngLat([station.lon, station.lat]).setPopup(popup).addTo(map);
+    }));
+  </script>
+</body>
+</html>
+

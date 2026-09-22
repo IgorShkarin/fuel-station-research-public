@@ -1,0 +1,12 @@
+data/
+station_mapping.json
+.env
+.env.*
+.config/
+*.log
+*.pid
+*.lock
+__pycache__/
+*.py[cod]
+.DS_Store
+

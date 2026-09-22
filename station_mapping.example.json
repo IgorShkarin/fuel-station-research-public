@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "notes": [
+    "Copy this file to station_mapping.json before running the monitor.",
+    "Keep your own coordinates and source IDs local: station_mapping.json is ignored by Git.",
+    "null means that a verified public source ID is not available."
+  ],
+  "stations": [
+    {
+      "priority": 1,
+      "station_name": "Example station A",
+      "address": "Your city, your address",
+      "coordinates": { "lat": 0, "lon": 0 },
+      "address_match": "replace with your verification note",
+      "yandex_id": null,
+      "tbank_id": null,
+      "gdebenz_id": null,
+      "tutbenz_id": null
+    }
+  ]
+}
+
