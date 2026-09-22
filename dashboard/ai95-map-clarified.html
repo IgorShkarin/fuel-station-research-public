@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuel Monitor — АИ‑95 · карта</title>
+  <link href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" rel="stylesheet">
+  <style>
+    :root { color-scheme: light dark; }
+    html, body, #map { height: 100%; margin: 0; }
+    #map { min-height: 600px; }
+    .maplibregl-ctrl-attrib { font: 11px/1.3 system-ui, sans-serif; }
+    .station-pin-button { background: transparent; border: 0; cursor: pointer; height: 44px; padding: 0; width: 44px; }
+    .station-pin-button:focus-visible { border-radius: 12px; outline: 3px solid #0a84ff; outline-offset: 2px; }
+    .station-pin { display: block; filter: drop-shadow(0 2px 5px rgb(0 0 0 / 28%)); font: 28px/1 "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+    .station-snackbar { backdrop-filter: blur(18px) saturate(1.15); background: rgb(255 255 255 / 90%); border: 1px solid rgb(0 0 0 / 8%); border-radius: 14px; box-shadow: 0 8px 24px rgb(0 0 0 / 16%); color: #1d1d1f; font: 500 12px/1.3 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; min-width: 145px; padding: 9px 11px; pointer-events: none; text-align: left; white-space: nowrap; }
+    .station-snackbar strong { display: block; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+    .station-snackbar span { color: #6e6e73; display: block; margin-top: 2px; }
+    .maplibregl-popup-content { border-radius: 12px; box-shadow: 0 12px 32px #0003; font: 14px/1.4 system-ui, sans-serif; padding: 14px 16px; }
+    .popup-title { font-weight: 700; margin-bottom: 2px; }
+    .popup-time { color: #1769e0; font-weight: 700; margin: 10px 0 4px; }
+    .popup-note { color: #5b6475; font-size: 12px; }
+    .popup-link { display: inline-block; margin-top: 12px; }
+    .map-actions { display: grid; gap: 8px; position: absolute; right: 12px; top: 12px; z-index: 2; }
+    .history-link { background: #1769e0; border-radius: 10px; box-shadow: 0 3px 12px rgb(0 0 0 / 18%); color: #fff; font: 600 13px/1.2 system-ui, sans-serif; padding: 10px 12px; text-decoration: none; }
+    .history-link:hover { background: #0c55bd; }
+    .map-note { background: rgb(255 255 255 / 92%); border-radius: 10px; box-shadow: 0 3px 12px rgb(0 0 0 / 16%); color: #5b6475; font: 11px/1.35 system-ui, sans-serif; max-width: 350px; padding: 8px 10px; }
+  </style>
+</head>
+<body>
+  <div id="map" aria-label="Интерактивная карта АЗС и текущих наблюдений АИ‑95"></div>
+  <div class="map-actions">
+    <a class="history-link" href="notification-history.html">Хронология статусов и уведомлений АИ‑95 →</a>
+    <div class="map-note">Срез источников: 21.09.2026 22:32 МСК. Нестабильность — частота смены статусов за 7 дней: 0 — стабильно, 100 — чаще всего среди этих АЗС.</div>
+  </div>
+  <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+  <script>
+    const stations = [
+      { name: '⭐ Teboil', address: 'Крутицкая наб., 17А', lat: 55.721209, lon: 37.6586964, problem: 38, eventsPerDay: 13.7, windows: '20:00 · 08:00 · 09:00', appearances: 169, last: 'есть · 1 источник', lastAt: '21.09 22:32', sources: 'TutBenz: есть · ГдеБЕНЗ: нет данных · Яндекс: нет' },
+      { name: 'Teboil', address: '3-й Крутицкий пер., вл.17, соор.1', lat: 55.730021, lon: 37.6587883, problem: 33, eventsPerDay: 11.7, windows: '02:00 · 17:00 · 21:00', appearances: 134, last: 'нет подтверждения', lastAt: '21.09 22:32', sources: 'TutBenz: нет данных · ГдеБЕНЗ: нет данных · Яндекс: нет' },
+      { name: 'Роснефть', address: 'Волгоградский просп., 24, стр.1', lat: 55.7273535, lon: 37.6792188, problem: 90, eventsPerDay: 32.3, windows: '06:00 · 05:00 · 11:00', appearances: 284, last: 'есть · 1 источник', lastAt: '21.09 22:32', sources: 'TutBenz: есть · ГдеБЕНЗ: нет данных · Яндекс: неопределённо' },
+      { name: 'Нефтьмагистраль', address: 'ул. Симоновский Вал, 28', lat: 55.717684, lon: 37.663004, problem: 12, eventsPerDay: 4.1, windows: '18:00 · 07:00 · 08:00', appearances: 37, last: 'есть · 1 источник', lastAt: '21.09 22:32', sources: 'TutBenz: нет данных · ГдеБЕНЗ: есть · Яндекс: нет' },
+      { name: 'Татнефть', address: '2-я ул. Машиностроения, 8А, стр.1', lat: 55.7160836, lon: 37.6842488, problem: 54, eventsPerDay: 19.4, windows: '07:00 · 13:00 · 16:00', appearances: 222, last: 'есть · 1 источник', lastAt: '21.09 22:32', sources: 'TutBenz: есть · ГдеБЕНЗ: нет данных · Яндекс: неопределённо' },
+      { name: 'Роснефть', address: '2-я ул. Машиностроения, вл.14, стр.1', lat: 55.7192468, lon: 37.696171, problem: 100, eventsPerDay: 35.9, windows: '00:00 · 06:00 · 08:00', appearances: 366, last: 'есть · 3 источника', lastAt: '21.09 22:32', sources: 'TutBenz: есть · ГдеБЕНЗ: есть · Яндекс: есть' },
+      { name: 'Лукойл', address: '7-я Кожуховская ул., 7', lat: 55.70954, lon: 37.67073, problem: 7, eventsPerDay: 2.6, windows: '02:00 · 06:00 · 07:00', appearances: 23, last: 'нет подтверждения', lastAt: '21.09 22:32', sources: 'TutBenz: нет данных · ГдеБЕНЗ: нет данных · Яндекс: нет' },
+      { name: 'Лукойл', address: 'Южнопортовая ул., вл.6, соор.А', lat: 55.710266, lon: 37.682156, problem: 12, eventsPerDay: 4.3, windows: '15:00 · 07:00 · 12:00', appearances: 17, last: 'есть · 1 источник', lastAt: '21.09 22:32', sources: 'TutBenz: есть · ГдеБЕНЗ: нет данных · Яндекс: нет' }
+    ];
+    const availabilityText = (station) => {
+      if (!station.last.startsWith('есть')) return 'АИ‑95 не подтверждён';
+      const time = station.lastAt.split(' ')[1];
+      return `АИ‑95 есть с ${time} · ${station.last.replace('есть · ', '')}`;
+    };
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://tiles.openfreemap.org/styles/liberty',
+      center: [37.68, 55.72],
+      zoom: 13.1,
+      attributionControl: true
+    });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
+    map.on('load', () => {
+      const bounds = new maplibregl.LngLatBounds();
+      stations.forEach((station) => {
+        // Coordinates are the exact Yandex-mapped station coordinates from station_mapping.json.
+        const pin = document.createElement('button');
+        pin.type = 'button';
+        pin.className = 'station-pin-button';
+        pin.setAttribute('aria-label', `${station.name}, ${station.address}, ${availabilityText(station)}`);
+        pin.innerHTML = '<span class="station-pin" aria-hidden="true">📍</span>';
+        const snackbar = document.createElement('div');
+        snackbar.className = 'station-snackbar';
+        snackbar.setAttribute('aria-hidden', 'true');
+        snackbar.innerHTML = `<strong>${station.name}</strong><span>Вероятный подвоз: ${station.windows}</span><span>${availabilityText(station)}</span><span>Нестабильность: ${station.problem}/100</span>`;
+        const yandex = `https://yandex.ru/maps/?ll=${station.lon}%2C${station.lat}&z=17&pt=${station.lon}%2C${station.lat}%2Cpm2rdm`;
+        const popup = new maplibregl.Popup({ offset: 22 }).setHTML(`<div class="popup-title">${station.name}</div><div>${station.address}</div><div class="popup-time">Статистически вероятный подвоз: ${station.windows}</div><div class="popup-note">${availabilityText(station)}<br>${station.sources}<br>Нестабильность: ${station.problem}/100 — ${station.eventsPerDay} смены статуса в день за последние 7 дней. Чем выше значение, тем чаще статусы менялись относительно остальных АЗС на карте.<br>${station.appearances} наблюдений доступности за весь журнал.<br>Временные метки рассчитаны по повторяемости появлений статуса в журнале.</div><a class="popup-link" href="${yandex}" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>`);
+        new maplibregl.Marker({ element: pin, anchor: 'bottom' }).setLngLat([station.lon, station.lat]).setPopup(popup).addTo(map);
+        new maplibregl.Marker({ element: snackbar, anchor: 'bottom-left', offset: [18, -18] }).setLngLat([station.lon, station.lat]).addTo(map);
+        bounds.extend([station.lon, station.lat]);
+      });
+      map.fitBounds(bounds, { padding: { top: 80, right: 180, bottom: 80, left: 180 }, maxZoom: 14 });
+    });
+  </script>
+</body>
+</html>
